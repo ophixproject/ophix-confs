@@ -1,5 +1,5 @@
 """
-ophix_conf.validators.base
+ophix_confs.validators.base
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 Base validator interface for configuration format validators.
 """

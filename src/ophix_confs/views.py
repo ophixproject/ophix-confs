@@ -1,5 +1,5 @@
 """
-ophix_conf.views
+ophix_confs.views
 ~~~~~~~~~~~~~~~~
 API views for the Configuration domain plugin.
 
@@ -19,6 +19,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from ophix.core.auth import ClientTokenAuthentication
+from ophix.core.audit import record_access
 from ophix.core.utils import assert_artifact_access, err_response
 
 from .models import Configuration, ClientConfiguration, ConfigFormat
@@ -55,10 +56,11 @@ class ConfigurationDetailView(APIView):
         except Configuration.DoesNotExist:
             raise Http404
 
-        assert_artifact_access(
+        access = assert_artifact_access(
             client, config, ClientConfiguration, "configuration"
         )
 
+        record_access(access, "GET")
         # Return raw content with format-appropriate Content-Type
         response = HttpResponse(
             config.content,
@@ -92,7 +94,7 @@ class ConfigurationDetailView(APIView):
         )
 
         # Creator gets full permissions
-        ClientConfiguration.objects.create(
+        access = ClientConfiguration.objects.create(
             client=client,
             configuration=config,
             enabled=True,
@@ -101,6 +103,7 @@ class ConfigurationDetailView(APIView):
             can_share=False,
         )
 
+        record_access(access, "POST")
         return Response({"status": "created"}, status=status.HTTP_201_CREATED)
 
     # ------------------------------------------------------------------

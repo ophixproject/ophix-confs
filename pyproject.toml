@@ -3,8 +3,8 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ophix-conf"
-version = "2026.03.23.01"
+name = "ophix-confs"
+version = "2026.04.10.01"
 description = "Configuration snippets domain plugin for Ophix Project Servers"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -19,7 +19,7 @@ dependencies = [
 ]
 
 [project.entry-points."ophix.plugins"]
-ophix_conf = "ophix_conf"
+ophix_confs = "ophix_confs"
 
 [tool.setuptools]
 package-dir = { "" = "src" }
@@ -28,7 +28,8 @@ package-dir = { "" = "src" }
 where = ["src"]
 
 [tool.setuptools.package-data]
-ophix_conf = [
+ophix_confs = [
     "docs/**/*",
     "migrations/**/*",
+    "deploy_templates/**/*",
 ]

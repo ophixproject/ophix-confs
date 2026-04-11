@@ -1,5 +1,5 @@
 """
-ophix_conf.urls
+ophix_confs.urls
 ~~~~~~~~~~~~~~~
 URL patterns contributed by the ophix-conf plugin.
 """

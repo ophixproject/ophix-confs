@@ -15,7 +15,7 @@ INITIAL_FORMATS = [
         "name": "json",
         "mime_type": "application/json",
         "description": "JavaScript Object Notation",
-        "validator_class": "ophix_conf.validators.JsonValidator",
+        "validator_class": "ophix_confs.validators.JsonValidator",
         "codemirror_mode": "javascript",
         "codemirror_mode_file": "mode/javascript.min.js",
         "enabled": True,
@@ -24,7 +24,7 @@ INITIAL_FORMATS = [
         "name": "yaml",
         "mime_type": "application/x-yaml",
         "description": "YAML Ain't Markup Language",
-        "validator_class": "ophix_conf.validators.YamlValidator",
+        "validator_class": "ophix_confs.validators.YamlValidator",
         "codemirror_mode": "yaml",
         "codemirror_mode_file": "mode/yaml.min.js",
         "enabled": True,
@@ -33,7 +33,7 @@ INITIAL_FORMATS = [
         "name": "xml",
         "mime_type": "application/xml",
         "description": "Extensible Markup Language",
-        "validator_class": "ophix_conf.validators.XmlValidator",
+        "validator_class": "ophix_confs.validators.XmlValidator",
         "codemirror_mode": "xml",
         "codemirror_mode_file": "mode/xml.min.js",
         "enabled": True,
@@ -42,7 +42,7 @@ INITIAL_FORMATS = [
         "name": "ini",
         "mime_type": "text/plain",
         "description": "INI configuration file (requires section headers)",
-        "validator_class": "ophix_conf.validators.IniValidator",
+        "validator_class": "ophix_confs.validators.IniValidator",
         "codemirror_mode": "properties",
         "codemirror_mode_file": "mode/properties.min.js",
         "enabled": True,
@@ -51,7 +51,7 @@ INITIAL_FORMATS = [
         "name": "toml",
         "mime_type": "application/toml",
         "description": "Tom's Obvious Minimal Language",
-        "validator_class": "ophix_conf.validators.TomlValidator",
+        "validator_class": "ophix_confs.validators.TomlValidator",
         "codemirror_mode": "toml",
         "codemirror_mode_file": "mode/toml.min.js",
         "enabled": True,
@@ -60,7 +60,7 @@ INITIAL_FORMATS = [
         "name": "env",
         "mime_type": "text/plain",
         "description": "Environment variable file (.env / dotenv format)",
-        "validator_class": "ophix_conf.validators.EnvValidator",
+        "validator_class": "ophix_confs.validators.EnvValidator",
         "codemirror_mode": "properties",
         "codemirror_mode_file": "mode/properties.min.js",
         "enabled": True,
@@ -78,13 +78,13 @@ INITIAL_FORMATS = [
 
 
 def create_formats(apps, schema_editor):
-    ConfigFormat = apps.get_model("ophix_conf", "ConfigFormat")
+    ConfigFormat = apps.get_model("ophix_confs", "ConfigFormat")
     for fmt in INITIAL_FORMATS:
         ConfigFormat.objects.get_or_create(name=fmt["name"], defaults=fmt)
 
 
 def delete_formats(apps, schema_editor):
-    ConfigFormat = apps.get_model("ophix_conf", "ConfigFormat")
+    ConfigFormat = apps.get_model("ophix_confs", "ConfigFormat")
     ConfigFormat.objects.filter(
         name__in=[f["name"] for f in INITIAL_FORMATS]
     ).delete()
@@ -93,7 +93,7 @@ def delete_formats(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("ophix_conf", "0001_initial"),
+        ("ophix_confs", "0001_initial"),
     ]
 
     operations = [

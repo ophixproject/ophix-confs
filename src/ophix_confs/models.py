@@ -1,5 +1,5 @@
 """
-ophix_conf.models
+ophix_confs.models
 ~~~~~~~~~~~~~~~~~
 Domain models for the Ophix Configuration server.
 
@@ -37,14 +37,14 @@ class ConfigFormat(models.Model):
         Human-readable description shown in the admin.
     validator_class
         Dotted Python path to a validator class implementing
-        ``ophix_conf.validators.base.BaseValidator``.
+        ``ophix_confs.validators.base.BaseValidator``.
         Null means no validation is performed (raw format).
     codemirror_mode
         CodeMirror mode name (e.g. ``yaml``, ``javascript``, ``xml``).
         Null means the plain text editor is used.
     codemirror_mode_file
         Relative path to the CodeMirror mode JS file under the
-        ``ophix_conf/codemirror/`` static directory.
+        ``ophix_confs/codemirror/`` static directory.
         Null means no mode file is loaded.
     enabled
         If False, this format cannot be used for new configurations.
@@ -70,7 +70,7 @@ class ConfigFormat(models.Model):
         max_length=100,
         blank=True,
         null=True,
-        help_text="Relative path to the CodeMirror mode JS file under ophix_conf/codemirror/.",
+        help_text="Relative path to the CodeMirror mode JS file under ophix_confs/codemirror/.",
     )
     enabled = models.BooleanField(default=True)
 

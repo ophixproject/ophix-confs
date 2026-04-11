@@ -1,5 +1,5 @@
 """
-ophix_conf.serializers
+ophix_confs.serializers
 ~~~~~~~~~~~~~~~~~~~~~~
 """
 

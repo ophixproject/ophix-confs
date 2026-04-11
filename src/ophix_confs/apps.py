@@ -1,9 +1,9 @@
 from django.apps import AppConfig
 
 
-class OphixConfConfig(AppConfig):
+class OphixConfsConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "ophix_conf"
+    name = "ophix_confs"
     verbose_name = "Configurations"
 
     def ready(self):

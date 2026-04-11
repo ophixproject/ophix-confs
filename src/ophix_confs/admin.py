@@ -1,5 +1,5 @@
 """
-ophix_conf.admin
+ophix_confs.admin
 ~~~~~~~~~~~~~~~~
 Admin registrations for ConfigFormat, Configuration and ClientConfiguration.
 """
@@ -8,7 +8,7 @@ from django.contrib import admin
 from django.conf import settings
 from django import forms
 from django.db import models
-from django.utils.html import format_html
+from django.utils.html import format_html, mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from .models import ConfigFormat, Configuration, ClientConfiguration
@@ -79,7 +79,7 @@ def linked_configurations(self, obj):
 
     return format_html(
         "<div style='display: flex; flex-wrap: wrap; gap: 0.5em; white-space: normal;'>{}</div>",
-        format_html(" ".join(items)),
+        mark_safe(" ".join(items)),
     )
 
 linked_configurations.short_description = _("Authorised Configurations")
@@ -89,21 +89,26 @@ linked_configurations.short_description = _("Authorised Configurations")
 # ConfigFormatAdmin
 # ============================================================
 
-@admin.register(ConfigFormat)
 class ConfigFormatAdmin(admin.ModelAdmin):
     list_display = (
         "name", "mime_type", "codemirror_mode",
         "validator_class", "enabled",
     )
+    list_editable = ("enabled",)
     list_filter = ("enabled",)
     search_fields = ("name", "mime_type")
     ordering = ("name",)
+    actions = None
 
     def get_readonly_fields(self, request, obj=None):
         # Prevent renaming existing formats — code references formats by name.
         if obj:
             return ("name",)
         return ()
+
+
+if getattr(settings, "SHOW_CONFIG_FORMATS_MODEL", False):
+    admin.site.register(ConfigFormat, ConfigFormatAdmin)
 
 
 # ============================================================
@@ -146,15 +151,14 @@ class ConfigurationAdmin(admin.ModelAdmin):
 
         if db_field.name == "format":
             class AnnotatedSelect(forms.Select):
-                def create_option(self, name, value, label, selected, index,
-                                  subgroup=None, attrs=None):
+                def create_option(self, name, value, label, selected, index, **kwargs):
                     option = super().create_option(
-                        name, value, label, selected, index,
-                        subgroup=subgroup, attrs=attrs,
+                        name, value, label, selected, index, **kwargs,
                     )
                     if value:
                         try:
-                            fmt = ConfigFormat.objects.get(pk=value)
+                            pk = value.value if hasattr(value, 'value') else value
+                            fmt = ConfigFormat.objects.get(pk=pk)
                             if fmt.codemirror_mode:
                                 option["attrs"]["data-codemirror-mode"] = fmt.codemirror_mode
                         except (ConfigFormat.DoesNotExist, ValueError):
@@ -189,7 +193,7 @@ class ConfigurationAdmin(admin.ModelAdmin):
 
         return format_html(
             "<div style='display: flex; flex-wrap: wrap; gap: 0.5em; white-space: normal;'>{}</div>",
-            format_html(" ".join(items)),
+            mark_safe(" ".join(items)),
         )
 
     linked_clients.short_description = _("Authorised Clients")

@@ -1,5 +1,5 @@
 """
-ophix_conf.validators
+ophix_confs.validators
 ~~~~~~~~~~~~~~~~~~~~~
 Configuration format validators.
 """
