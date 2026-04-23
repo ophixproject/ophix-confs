@@ -1,61 +1,117 @@
-# ophix-conf
+# ophix-confs
 
-Configuration snippets domain plugin for **Ophix Project Servers**.
+Configuration snippets domain plugin for [ophix-server-base](https://github.com/ophixproject/ophix-server-base).
 
-Stores named configuration snippets in a variety of formats (YAML, JSON,
-XML, INI, TOML, .env, raw) and distributes them verbatim to authorised
-clients with token + IP authentication.
+Stores named configuration snippets in a variety of formats (YAML, JSON, XML, INI,
+TOML, .env, raw) and distributes them verbatim to authorised fleet clients over HTTPS
+with token + IP authentication.
 
 ---
 
 ## Installation
 
+Install alongside [ophix-server-base](https://github.com/ophixproject/ophix-server-base):
+
 ```bash
-pip install ophix-server-base ophix-conf
+pip install ophix-server-base ophix-confs
+```
+
+With documentation, theme tools, CodeMirror editor, and an optional theme:
+
+```bash
+pip install ophix-server-base ophix-confs ophix-docs ophix-theme-tools ophix-codemirror ophix-theme-example
+```
+
+See [Guided installation](#guided-installation) below.
+
+---
+
+## Guided installation
+
+The recommended deployment path uses the three-step guided installer. Substitute
+`confserver` with your preferred slug throughout.
+
+### Step 1 — configure
+
+```bash
+ophix-manage configure_install confserver
+```
+
+Interactive wizard. Prompts for install directory, hostname, TLS certificate paths,
+database connection, superuser credentials, and admin theme.
+
+### Step 2 — install
+
+```bash
+ophix-manage run_install confserver
+```
+
+Creates the directory structure, copies TLS files, generates nginx and systemd configs,
+runs `migrate` and `collectstatic`, creates the superuser, and activates the theme.
+
+### Step 3 — system integration (as root)
+
+```bash
+sudo bash confserver_sudo_install.sh
+```
+
+Sets file ownership, installs the nginx config and systemd service, and starts the server.
+
+For full details see the [ophix-server-base README](https://github.com/ophixproject/ophix-server-base).
+
+---
+
+## Routine upgrades
+
+```bash
+pip install --upgrade ophix-server-base ophix-confs
+ophix-manage migrate
+ophix-manage collectstatic --noinput
+sudo systemctl restart confserver
+```
+
+If the upgrade added new `.env` settings, pull them in first:
+
+```bash
+ophix-manage generate_deploy_config --append
 ```
 
 ---
 
 ## What this plugin provides
 
-- `ConfigFormat` model — supported formats with validator and CodeMirror metadata
-- `Configuration` model — named config snippet with format, content, enabled flag
+- `ConfigFormat` model — supported formats with validator and CodeMirror mode metadata
+- `Configuration` model — named config snippet with format, content, and `enabled` flag
 - `ClientConfiguration` join model — per-client permissions
-- Format validation on ingestion (syntax checked before storing)
+  (`enabled`, `can_update`, `can_delete`, `can_share`)
+- Format validation on ingestion — syntax is checked before storing
 - `GET/POST/PUT/DELETE /api/configs/<n>/` API endpoints
-- Raw content returned with correct `Content-Type` header
-- CodeMirror syntax highlighting editor in Django admin (vendored assets)
-- Django admin with inline `ClientConfiguration` management
-- Built-in documentation
-
----
-
-## Adding CodeMirror assets
-
-CodeMirror JavaScript and CSS files must be downloaded separately and
-placed in:
-
-```
-src/ophix_conf/static/ophix_conf/codemirror/
-```
-
-See `src/ophix_conf/static/ophix_conf/codemirror/README.md` for the
-complete list of required files and download URLs.
-
----
-
-## Adding a new format
-
-1. Download the CodeMirror mode file and place it in `static/ophix_conf/codemirror/mode/`
-2. Add a validator class in `ophix_conf/validators/formats.py`
-3. Export it from `ophix_conf/validators/__init__.py`
-4. Add a data migration for the new `ConfigFormat` row
-5. Release a new version — operators run `pip install --upgrade ophix-conf && ophix-manage migrate`
+- Raw content returned with the correct `Content-Type` header
+- CodeMirror syntax highlighting in the Django admin (requires `ophix-codemirror`)
+- Django admin with inline `ClientConfiguration` management and linked-artifact columns
+- Access audit logging via `ophix.core.audit`
+- Built-in documentation (loaded by `ophix_docs_update` if `ophix-docs` is installed)
 
 ---
 
 ## Configuration (`.env`)
 
-No conf-specific settings are required beyond the standard
-`ophix-server-base` settings. `ENABLE_ARTIFACT_DELETE` controls
-whether clients can delete configurations they own.
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `ENABLE_ARTIFACT_DELETE` | `False` | Allow clients to delete configurations they own |
+| `SHOW_CONFIG_FORMATS_MODEL` | `False` | Show the Configuration Formats model in admin |
+
+---
+
+## Client
+
+Fleet clients use [ophix-conf-client](https://github.com/ophixproject/ophix-conf-client)
+to authenticate and fetch configuration snippets.
+
+---
+
+## Themes
+
+Install a theme alongside this plugin to customise the admin interface appearance.
+See [ophix-theme-tools](https://github.com/ophixproject/ophix-theme-tools) for
+available themes and installation instructions.
