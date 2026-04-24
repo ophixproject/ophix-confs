@@ -20,6 +20,7 @@ ClientConfiguration
 """
 
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from ophix.core.models import ClientArtifactBase
 
 
@@ -58,26 +59,26 @@ class ConfigFormat(models.Model):
         max_length=200,
         blank=True,
         null=True,
-        help_text="Dotted path to validator class. Leave blank for no validation.",
+        help_text=_("Dotted path to validator class. Leave blank for no validation."),
     )
     codemirror_mode = models.CharField(
         max_length=50,
         blank=True,
         null=True,
-        help_text="CodeMirror mode name (e.g. 'yaml', 'javascript', 'xml').",
+        help_text=_("CodeMirror mode name (e.g. 'yaml', 'javascript', 'xml')."),
     )
     codemirror_mode_file = models.CharField(
         max_length=100,
         blank=True,
         null=True,
-        help_text="Relative path to the CodeMirror mode JS file under ophix_confs/codemirror/.",
+        help_text=_("Relative path to the CodeMirror mode JS file under ophix_confs/codemirror/."),
     )
     enabled = models.BooleanField(default=True)
 
     class Meta:
         ordering = ("name",)
-        verbose_name = "Configuration Format"
-        verbose_name_plural = "Configuration Formats"
+        verbose_name = _("Configuration Format")
+        verbose_name_plural = _("Configuration Formats")
 
     def __str__(self) -> str:
         return self.name
@@ -109,10 +110,10 @@ class Configuration(models.Model):
         ConfigFormat,
         on_delete=models.PROTECT,
         related_name="configurations",
-        help_text="Format of this configuration snippet.",
+        help_text=_("Format of this configuration snippet."),
     )
     content = models.TextField(
-        help_text="Configuration content stored verbatim.",
+        help_text=_("Configuration content stored verbatim."),
     )
     enabled = models.BooleanField(default=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -28,8 +28,8 @@ class ClientConfigurationInlineForClient(admin.TabularInline):
     autocomplete_fields = ('configuration',)
     fields = ('configuration', 'enabled', 'notes')
     classes = ('collapse',)
-    verbose_name = "Configuration"
-    verbose_name_plural = "Configurations"
+    verbose_name = _("Configuration")
+    verbose_name_plural = _("Configurations")
     formfield_overrides = {
         models.TextField: {
             'widget': forms.Textarea(attrs={'rows': 2, 'cols': 120})
@@ -46,8 +46,8 @@ class ClientConfigurationInlineForConfiguration(admin.TabularInline):
     autocomplete_fields = ('client',)
     fields = ('client', 'enabled', 'notes')
     classes = ('collapse',)
-    verbose_name = "Client"
-    verbose_name_plural = "Clients"
+    verbose_name = _("Client")
+    verbose_name_plural = _("Clients")
     formfield_overrides = {
         models.TextField: {
             'widget': forms.Textarea(attrs={'rows': 2, 'cols': 120})
@@ -226,4 +226,4 @@ if getattr(settings, "SHOW_CLIENT_ARTIFACT_MODEL", False):
 
         def short_notes(self, obj):
             return (obj.notes[:50] + '…') if obj.notes and len(obj.notes) > 50 else obj.notes
-        short_notes.short_description = 'Notes'
+        short_notes.short_description = _('Notes')

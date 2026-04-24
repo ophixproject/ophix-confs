@@ -30,6 +30,7 @@ where = ["src"]
 [tool.setuptools.package-data]
 ophix_confs = [
     "docs/**/*",
+    "locale/**/*",
     "migrations/**/*",
     "deploy_templates/**/*",
 ]
