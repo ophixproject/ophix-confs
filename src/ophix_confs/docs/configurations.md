@@ -1,7 +1,7 @@
 ---
 title: Configurations
 slug: configurations
-order: 10
+order: 100
 section: Configurations
 ---
 
