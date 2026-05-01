@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ophix-confs"
-version = "2026.04.29.01"
+version = "2026.05.01.01"
 description = "Configuration snippets domain plugin for Ophix Project Servers"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -13,8 +13,8 @@ authors = [
     { name = "Ophix Project" }
 ]
 dependencies = [
-    "ophix-server-base>=2026.03.23.01",
-    "ophix-codemirror>=2026.04.05.01",
+    "ophix-server-base>=2026.05.01.01",
+    "ophix-codemirror>=2026.05.01.02",
     "PyYAML>=6.0",
 ]
 
