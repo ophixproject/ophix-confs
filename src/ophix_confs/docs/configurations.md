@@ -68,9 +68,13 @@ Validates the new token before overwriting `.conf.env`. Safe to run from cron.
 ### Fetching configurations
 
 ```bash
-conf-client fetch nginx-config             # prints raw content to stdout
-conf-client fetch nginx-config --format-info   # also shows format and timestamp
+conf-client fetch nginx-config                                    # print to stdout
+conf-client fetch nginx-config --format-info                      # also show format and timestamp
+conf-client fetch nginx-config --output-file /etc/nginx/conf.d/app.conf   # write to file
+conf-client fetch nginx-config --output-file -                    # explicit stdout
 ```
+
+When `--output-file` is a path, the content is written directly to that file and parent directories are created automatically. `--format-info` prints format and timestamp to stdout as a separate line rather than embedding it in the file.
 
 ### Verifying retrieval
 
