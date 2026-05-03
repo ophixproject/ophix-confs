@@ -83,21 +83,40 @@ conf-client check --name nginx-config        # check by configuration name
 
 ### Importing configurations
 
+The `import` command uploads a local file to the server as a named configuration. Supply a name using `--name`, `--env`, or both.
+
+**`--name` only** — import by an explicit name. No `.conf.env` changes.
+
 ```bash
-# Format inferred from file extension
 conf-client import --name nginx-config --input-file nginx.conf.yaml
+```
 
-# Explicit format
-conf-client import --name nginx-config --input-file nginx.conf --format yaml
+**`--env` only** — look up the configuration name from an env var already in `.conf.env`. Fails if the var is not set.
 
-# Update existing
+```bash
+conf-client import --env NGINX_CONFIG_NAME --input-file nginx.conf.yaml
+```
+
+**`--name` and `--env` together** — import by the explicit name and write the `VAR=name` mapping to `.conf.env` in one step. If the var is already mapped to a different name, the command fails with an error — edit `.conf.env` manually if you intend to change the mapping.
+
+```bash
+conf-client import --name nginx-config --env NGINX_CONFIG_NAME --input-file nginx.conf.yaml
+# Mapped NGINX_CONFIG_NAME=nginx-config in .conf.env
+```
+
+Add `--overwrite` to update an existing configuration instead of creating a new one:
+
+```bash
 conf-client import --name nginx-config --input-file nginx.conf.yaml --overwrite
+```
 
-# Read from stdin
+Read from stdin by passing `-` as the input file (format must be explicit):
+
+```bash
 cat nginx.conf.yaml | conf-client import --name nginx-config --input-file - --format yaml
 ```
 
-Extension-to-format inference: `.yaml`/`.yml` → yaml, `.json` → json, `.xml` → xml, `.ini`/`.cfg` → ini, `.toml` → toml, `.env` → env. All others default to `raw`.
+Extension-to-format inference (when `--format` is omitted): `.yaml`/`.yml` → yaml, `.json` → json, `.xml` → xml, `.ini`/`.cfg` → ini, `.toml` → toml, `.env` → env. All others default to `raw`.
 
 ---
 
