@@ -67,11 +67,15 @@ Validates the new token before overwriting `.conf.env`. Safe to run from cron.
 
 ### Fetching configurations
 
+`--name` and `--var` are mutually exclusive; one is required.
+
 ```bash
-conf-client fetch nginx-config                                    # print to stdout
-conf-client fetch nginx-config --format-info                      # also show format and timestamp
-conf-client fetch nginx-config --output-file /etc/nginx/conf.d/app.conf   # write to file
-conf-client fetch nginx-config --output-file -                    # explicit stdout
+conf-client fetch --name nginx-config                             # fetch by name, print to stdout
+conf-client fetch --var NGINX_CONFIG_NAME                         # look up name from .conf.env, then fetch
+conf-client fetch --name nginx-config --format-info               # also show format and timestamp
+conf-client fetch --name nginx-config --output-file /etc/nginx/conf.d/app.conf   # write to file
+conf-client fetch --var NGINX_CONFIG_NAME --output-file /etc/nginx/conf.d/app.conf
+conf-client fetch --name nginx-config --output-file -             # explicit stdout
 ```
 
 When `--output-file` is a path, the content is written directly to that file and parent directories are created automatically. `--format-info` prints format and timestamp to stdout as a separate line rather than embedding it in the file.
@@ -87,7 +91,7 @@ conf-client check --name nginx-config        # check by configuration name
 
 ### Importing configurations
 
-The `import` command uploads a local file to the server as a named configuration. Supply a name using `--name`, `--env`, or both.
+The `import` command uploads a local file to the server as a named configuration. Supply a name using `--name`, `--var`, or both.
 
 **`--name` only** — import by an explicit name. No `.conf.env` changes.
 
@@ -95,16 +99,16 @@ The `import` command uploads a local file to the server as a named configuration
 conf-client import --name nginx-config --input-file nginx.conf.yaml
 ```
 
-**`--env` only** — look up the configuration name from an env var already in `.conf.env`. Fails if the var is not set.
+**`--var` only** — look up the configuration name from an env var already in `.conf.env`. Fails if the var is not set.
 
 ```bash
-conf-client import --env NGINX_CONFIG_NAME --input-file nginx.conf.yaml
+conf-client import --var NGINX_CONFIG_NAME --input-file nginx.conf.yaml
 ```
 
-**`--name` and `--env` together** — import by the explicit name and write the `VAR=name` mapping to `.conf.env` in one step. If the var is already mapped to a different name, the command fails with an error — edit `.conf.env` manually if you intend to change the mapping.
+**`--name` and `--var` together** — import by the explicit name and write the `VAR=name` mapping to `.conf.env` in one step. If the var is already mapped to a different name, the command fails with an error — edit `.conf.env` manually if you intend to change the mapping.
 
 ```bash
-conf-client import --name nginx-config --env NGINX_CONFIG_NAME --input-file nginx.conf.yaml
+conf-client import --name nginx-config --var NGINX_CONFIG_NAME --input-file nginx.conf.yaml
 # Mapped NGINX_CONFIG_NAME=nginx-config in .conf.env
 ```
 
