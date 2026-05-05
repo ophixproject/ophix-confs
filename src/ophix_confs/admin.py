@@ -221,8 +221,8 @@ if getattr(settings, "SHOW_CLIENT_ARTIFACT_MODEL", False):
         list_filter = ('enabled', 'client__host', 'client', 'configuration')
         search_fields = ('client__name', 'configuration__name', 'notes')
         actions = None
-        verbose_name = "Client-Configuration Link"
-        verbose_name_plural = "Client-Configuration Links"
+        verbose_name = _("Client-Configuration Link")
+        verbose_name_plural = _("Client-Configuration Links")
 
         def short_notes(self, obj):
             return (obj.notes[:50] + '…') if obj.notes and len(obj.notes) > 50 else obj.notes
