@@ -75,7 +75,7 @@ sudo systemctl restart confserver
 If the upgrade added new `.env` settings, pull them in first:
 
 ```bash
-ophix-manage generate_deploy_config --append
+ophix-manage generate_config --append
 ```
 
 ---
@@ -92,7 +92,7 @@ ophix-manage generate_deploy_config --append
 - CodeMirror syntax highlighting in the Django admin (requires `ophix-codemirror`)
 - Django admin with inline `ClientConfiguration` management and linked-artifact columns
 - Access audit logging via `ophix.core.audit`
-- Built-in documentation (loaded by `ophix_docs_update` if `ophix-docs` is installed)
+- Built-in documentation (loaded by `update_docs` if `ophix-docs` is installed)
 
 ---
 
@@ -118,7 +118,7 @@ If `ophix-docs` is installed, documentation is loaded automatically during `run_
 To load or refresh docs manually after an upgrade:
 
 ```bash
-ophix-manage ophix_docs_update --include-app-docs ophix.core,ophix_confs,ophix_docs,ophix_theme_tools
+ophix-manage update_docs --include-app-docs ophix.core,ophix_confs,ophix_docs
 ```
 
 See [ophix-docs](https://github.com/ophixproject/ophix-docs) for the full list of
