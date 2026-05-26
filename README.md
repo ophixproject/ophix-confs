@@ -10,17 +10,19 @@ with token + IP authentication.
 
 ## Installation
 
-Install alongside [ophix-server-base](https://github.com/ophixproject/ophix-server-base):
-
 ```bash
-pip install ophix-server-base ophix-confs
+pip install ophix-confs
 ```
 
-With documentation, theme tools, CodeMirror editor, and an optional theme:
+Recommended extras:
 
 ```bash
-pip install ophix-server-base ophix-confs ophix-docs ophix-theme-tools ophix-codemirror ophix-theme-example
+pip install ophix-confs ophix-docs venv-cmds
 ```
+
+- `ophix-docs` — inline documentation in the admin UI
+- `venv-cmds` — lists available venv commands and checks for package updates
+- A theme pack (e.g. `ophix-theme-example`) can be added for custom branding; the built-in Ophix theme is active on fresh installs by default
 
 See [Guided installation](#guided-installation) below.
 
