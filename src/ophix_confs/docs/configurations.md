@@ -226,7 +226,7 @@ Requires `can_delete` on the link **and** `ENABLE_ARTIFACT_DELETE=true` in the s
 
 ## Server settings
 
-These variables are set in the server `.env` file. Run `ophix-manage generate_deploy_config --env` to generate a sample `.env` with all variables and their descriptions.
+These variables are set in the server `.env` file. Run `ophix-manage generate_config --env` to generate a sample `.env` with all variables and their descriptions.
 
 | Variable | Default | Description |
 | --- | --- | --- |
