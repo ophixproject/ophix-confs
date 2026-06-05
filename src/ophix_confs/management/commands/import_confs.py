@@ -35,6 +35,7 @@ Preview without writing:
 
 import base64
 import json
+import os
 from pathlib import Path
 
 from django.core.management.base import BaseCommand, CommandError
@@ -57,11 +58,20 @@ class Command(BaseCommand):
             metavar="FILE",
             help="Source file path (JSON produced by export_confs).",
         )
-        parser.add_argument(
+        passphrase_group = parser.add_mutually_exclusive_group()
+        passphrase_group.add_argument(
             "--passphrase",
+            nargs="?",
+            const="",
             metavar="PASSPHRASE",
             default=None,
-            help="Passphrase to decrypt content (required if file was exported with --passphrase).",
+            help="Passphrase to decrypt content (required if file was exported with --passphrase). Omit the value to be prompted securely (input is hidden).",
+        )
+        passphrase_group.add_argument(
+            "--passphrase-env",
+            metavar="ENVVAR",
+            default=None,
+            help="Read the passphrase from the named environment variable (for automated use).",
         )
         parser.add_argument(
             "--include-client-links",
@@ -83,7 +93,19 @@ class Command(BaseCommand):
         from ophix_confs.models import Configuration, ClientConfiguration, ConfigFormat
 
         input_path   = Path(options["input_file"])
-        passphrase   = options["passphrase"]
+        passphrase     = options["passphrase"]
+        passphrase_env = options["passphrase_env"]
+        if passphrase_env:
+            passphrase = os.environ.get(passphrase_env)
+            if not passphrase:
+                raise CommandError(
+                    f"Environment variable '{passphrase_env}' is not set or empty."
+                )
+        elif passphrase == "":
+            import getpass
+            passphrase = getpass.getpass("Passphrase: ")
+            if not passphrase:
+                raise CommandError("Passphrase cannot be empty.")
         import_links = options["include_client_links"]
         dry_run      = options["dry_run"]
         quiet        = options["quiet"]
