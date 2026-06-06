@@ -36,7 +36,7 @@ ophix-manage export_confs --output-file confs.json
 **Export with encrypted content:**
 
 ```bash
-ophix-manage export_confs --output-file confs.json --passphrase "your-passphrase"
+ophix-manage export_confs --output-file confs.json --passphrase 'your-passphrase'
 ```
 
 **Also export client access links:**
@@ -50,6 +50,8 @@ ophix-manage export_confs --output-file confs.json --include-client-links
 ```bash
 ophix-manage export_confs --output-file confs.json --dry-run
 ```
+
+> **Note:** Always use single quotes around passphrases in bash. Double-quoted strings allow bash to interpret `!` as a history event, which corrupts a passphrase containing an exclamation mark.
 
 | Flag | Description |
 | --- | --- |
@@ -84,7 +86,7 @@ ophix-manage import_confs --input-file confs.json
 **Import from an encrypted file:**
 
 ```bash
-ophix-manage import_confs --input-file confs.json --passphrase "your-passphrase"
+ophix-manage import_confs --input-file confs.json --passphrase 'your-passphrase'
 ```
 
 **Also import client links:**
@@ -124,14 +126,14 @@ Formats (`yaml`, `json`, `xml`, `ini`, `toml`, `env`, `raw`) are installed by da
 ```bash
 # 1. Export from the source server
 ophix-manage export_hosts --output-file hosts.json
-ophix-manage export_clients --output-file clients.json --passphrase "client-passphrase"
+ophix-manage export_clients --output-file clients.json --passphrase 'client-passphrase'
 ophix-manage export_confs --output-file confs.json --include-client-links
 
 # 2. Transfer all three files to the target server
 
 # 3. Import on the target server in dependency order
 ophix-manage import_hosts --input-file hosts.json
-ophix-manage import_clients --input-file clients.json --passphrase "client-passphrase"
+ophix-manage import_clients --input-file clients.json --passphrase 'client-passphrase'
 ophix-manage import_confs --input-file confs.json --include-client-links
 ```
 
