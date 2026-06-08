@@ -11,6 +11,7 @@ from django.db import models
 from django.utils.html import format_html, mark_safe
 from django.utils.translation import gettext_lazy as _
 
+from ophix.core.admin import CleanSaveMessageMixin
 from .models import ConfigFormat, Configuration, ClientConfiguration
 
 
@@ -89,7 +90,7 @@ linked_configurations.short_description = _("Authorised Configurations")
 # ConfigFormatAdmin
 # ============================================================
 
-class ConfigFormatAdmin(admin.ModelAdmin):
+class ConfigFormatAdmin(CleanSaveMessageMixin, admin.ModelAdmin):
     list_display = (
         "name", "mime_type", "codemirror_mode",
         "validator_class", "enabled",
@@ -116,7 +117,7 @@ if getattr(settings, "SHOW_CONFIG_FORMATS_MODEL", False):
 # ============================================================
 
 @admin.register(Configuration)
-class ConfigurationAdmin(admin.ModelAdmin):
+class ConfigurationAdmin(CleanSaveMessageMixin, admin.ModelAdmin):
     list_display = (
         'name',
         'format',
@@ -206,7 +207,7 @@ class ConfigurationAdmin(admin.ModelAdmin):
 if getattr(settings, "SHOW_CLIENT_ARTIFACT_MODEL", False):
 
     @admin.register(ClientConfiguration)
-    class ClientConfigurationAdmin(admin.ModelAdmin):
+    class ClientConfigurationAdmin(CleanSaveMessageMixin, admin.ModelAdmin):
         """
         Exists primarily for auditing and debugging.
         Day-to-day management should be done via inlines.
