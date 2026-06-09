@@ -1,5 +1,11 @@
 # Ophix Confs Release Notes
 
+## 2026.06.09.01
+
+- Fixed `export_clients --passphrase` shown in the restore workflow — client tokens are
+  stored as SHA-256 hashes and `export_clients` does not accept or require a passphrase.
+- Added "Scheduled backups" section to `configuration-backup.md` with recommended `.env` values.
+
 ## 2026.06.05.02
 
 - `export_confs`: export file now includes a `meta` block with `created_at`, `server_name`, `server_version`, `hostname`, `domain`, `command`, `run_by`, `login_user`, and `ssh_origin`.
