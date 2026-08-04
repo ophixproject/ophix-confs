@@ -1,5 +1,18 @@
 # Ophix Confs Release Notes
 
+## Unreleased
+
+- `export_confs` gains a `--stable` flag: omits the `meta` block and passes `sort_keys=True`,
+  so re-exporting unchanged data produces byte-identical output. Written for
+  `ophix-revisions`. Not yet compatible with `--passphrase`/`--passphrase-env` together —
+  Fernet encryption's own random IV/timestamp means encrypted output can never be
+  byte-identical across runs; combining `--stable` with a passphrase now raises a clear
+  error instead of silently producing non-reproducible "stable" output.
+- Fixed a latent nondeterminism bug in `--include-client-links`: the nested
+  `client_links` join query had no explicit `.order_by()`, so row order (and therefore
+  export order) wasn't guaranteed stable across runs even for unchanged data. Now ordered
+  by `client__host__name, client__name`.
+
 ## 2026.06.09.01
 
 - Fixed `export_clients --passphrase` shown in the restore workflow — client tokens are

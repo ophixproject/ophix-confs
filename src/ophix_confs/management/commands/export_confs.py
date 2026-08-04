@@ -82,7 +82,9 @@ def _serialize(configuration, fernet=None, include_links=False):
 
     if include_links:
         links = []
-        for link in configuration.client_links.select_related("client__host").all():
+        for link in configuration.client_links.select_related("client__host").order_by(
+            "client__host__name", "client__name"
+        ):
             links.append({
                 "client":     link.client.name,
                 "host":       link.client.host.name,
@@ -133,6 +135,13 @@ class Command(BaseCommand):
             help="Show how many configurations would be exported without writing anything.",
         )
         parser.add_argument(
+            "--stable",
+            action="store_true",
+            help="Omit the meta block and sort keys, so re-exporting unchanged data "
+                 "produces byte-identical output (used by ophix-revisions). Not yet "
+                 "supported together with --passphrase/--passphrase-env.",
+        )
+        parser.add_argument(
             "--quiet",
             action="store_true",
             help="Suppress all output.",
@@ -162,7 +171,16 @@ class Command(BaseCommand):
                 self.stderr.write("Passphrases do not match — try again.")
         include_links = options["include_client_links"]
         dry_run       = options["dry_run"]
+        stable        = options["stable"]
         quiet         = options["quiet"]
+
+        if stable and passphrase:
+            raise CommandError(
+                "--stable does not yet support encrypted export (--passphrase/"
+                "--passphrase-env) — Fernet encryption is non-deterministic by design, "
+                "so encrypted output can never be byte-identical across runs. See the "
+                "ophix-revisions design notes (Phase B, deferred)."
+            )
 
         configurations = list(
             Configuration.objects.select_related("format").order_by("name")
@@ -191,19 +209,18 @@ class Command(BaseCommand):
             salt_b64 = base64.urlsafe_b64encode(salt).decode()
             fernet = Fernet(_derive_key(passphrase, salt))
 
-        payload = {
-            "version":              1,
-            "meta":                 _build_meta("confs", "export_confs"),
-            "encrypted":            fernet is not None,
-            "salt":                 salt_b64,
-            "include_client_links": include_links,
-            "configurations":       [
-                _serialize(c, fernet, include_links) for c in configurations
-            ],
-        }
+        payload = {"version": 1}
+        if not stable:
+            payload["meta"] = _build_meta("confs", "export_confs")
+        payload["encrypted"] = fernet is not None
+        payload["salt"] = salt_b64
+        payload["include_client_links"] = include_links
+        payload["configurations"] = [
+            _serialize(c, fernet, include_links) for c in configurations
+        ]
 
         with output_path.open("w", encoding="utf-8") as f:
-            json.dump(payload, f, indent=2)
+            json.dump(payload, f, indent=2, sort_keys=stable)
 
         if not quiet:
             enc_note  = " (content encrypted)" if fernet else ""
