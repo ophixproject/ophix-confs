@@ -7,3 +7,23 @@ def install_configure(conf, command):
     existing = conf.get("backup", "targets_extra", fallback="")
     conf.set("backup", "targets_extra", ",".join(filter(None, [existing, "confs"])))
 
+
+def get_revisions_targets():
+    """
+    Optional hook discovered by ophix-revisions (if installed) — see memory
+    `feedback_no_hardcoded_target_catalogs.md`. `encrypted` is the default
+    classification only — an operator can still force this target into
+    REVISION_TARGETS_ENCRYPTED, which export_confs's own --stable guard
+    then rejects until Phase B (deterministic encryption) lands, since it's
+    only ever run unencrypted for now.
+    """
+    return [
+        {
+            "name": "confs",
+            "app_label": "ophix_confs",
+            "export_command": "export_confs",
+            "encrypted": False,
+            "stable": True,
+        },
+    ]
+

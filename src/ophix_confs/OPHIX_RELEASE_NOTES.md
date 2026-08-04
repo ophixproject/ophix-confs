@@ -12,6 +12,9 @@
   `client_links` join query had no explicit `.order_by()`, so row order (and therefore
   export order) wasn't guaranteed stable across runs even for unchanged data. Now ordered
   by `client__host__name, client__name`.
+- `ophix_confs` gains `get_revisions_targets()`, declaring its own `confs` target for
+  `ophix-revisions` (if installed) to discover — see memory
+  `feedback_no_hardcoded_target_catalogs.md`.
 
 ## 2026.06.09.01
 
