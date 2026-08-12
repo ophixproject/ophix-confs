@@ -1,6 +1,6 @@
 # Ophix Confs Release Notes
 
-## Unreleased
+## 2026.08.04.01
 
 - `export_confs` gains a `--stable` flag: omits the `meta` block and passes `sort_keys=True`,
   so re-exporting unchanged data produces byte-identical output. Written for
