@@ -10,8 +10,7 @@ def install_configure(conf, command):
 
 def get_revisions_targets():
     """
-    Optional hook discovered by ophix-revisions (if installed) — see memory
-    `feedback_no_hardcoded_target_catalogs.md`. `encrypted` is the default
+    Optional hook discovered by ophix-revisions (if installed). `encrypted` is the default
     classification only — an operator can still force this target into
     REVISION_TARGETS_ENCRYPTED, which export_confs's own --stable guard
     then rejects until Phase B (deterministic encryption) lands, since it's
