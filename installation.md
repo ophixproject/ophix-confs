@@ -107,11 +107,13 @@ source .conf-env/bin/activate
 ## Step 2 - Install the confserver and recommended add-ons
 
 ```bash
-pip install ophix-confs ophix-dbengine-mariadb ophix-docs ophix-codemirror ophix-client-management venv-cmds
+pip install ophix-confs ophix-dbengine-mariadb ophix-docs ophix-client-management venv-cmds
 ```
 
-- `ophix-server-base` is pulled in automatically as a dependency of `ophix-confs` - no need to
-  install it separately.
+- `ophix-server-base` and `ophix-codemirror` are both pulled in automatically as dependencies of
+  `ophix-confs` - no need to install either separately. `ophix-codemirror` is what gives the
+  `content` field syntax highlighting in the admin UI, switching mode automatically to match each
+  Configuration's format (YAML/JSON/XML/INI/TOML/.env).
 - `ophix-dbengine-mariadb` installs the MariaDB/MySQL driver. Every database engine needs its
   matching `ophix-dbengine-*` plugin installed explicitly - none is bundled by default, MariaDB
   included. Swap it for a different one if you're using another engine:
@@ -123,11 +125,6 @@ pip install ophix-confs ophix-dbengine-mariadb ophix-docs ophix-codemirror ophix
   ```
 
 - `ophix-docs` - inline markdown documentation in the admin UI (recommended, optional).
-- `ophix-codemirror` - syntax-highlighting editor widget for the `content` field, switching
-  mode automatically to match each Configuration's format (YAML/JSON/XML/INI/TOML/.env). This
-  one is worth actually installing for `ophix-confs` specifically, rather than treating it as
-  purely optional - without it the field falls back to a plain text box with no highlighting at
-  all for any format.
 - `ophix-client-management` - fleet client status dashboard: token rotation health, client
   package versions, last-seen tracking (recommended, optional).
 - `venv-cmds` - lists the console commands available in this venv and checks installed packages
