@@ -13,6 +13,7 @@ import logging
 
 from django.conf import settings
 from django.http import Http404, HttpResponse
+from django.utils.translation import gettext_lazy as _
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -79,7 +80,7 @@ class ConfigurationDetailView(APIView):
 
         if Configuration.objects.filter(name=name).exists():
             return Response(
-                {"error": err_response("Configuration already exists", "Conflict")},
+                {"error": err_response(_("Configuration already exists"), _("Conflict"))},
                 status=status.HTTP_409_CONFLICT,
             )
 
@@ -142,7 +143,7 @@ class ConfigurationDetailView(APIView):
 
         if not getattr(settings, "ENABLE_ARTIFACT_DELETE", False):
             return Response(
-                {"error": err_response("Configuration deletion is disabled on this server.")},
+                {"error": err_response(_("Configuration deletion is disabled on this server."))},
                 status=status.HTTP_403_FORBIDDEN,
             )
 

@@ -16,6 +16,7 @@ RawValidator        no-op — accepts any content
 """
 
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 from .base import BaseValidator
 
 
@@ -27,7 +28,7 @@ class JsonValidator(BaseValidator):
         try:
             json.loads(content)
         except json.JSONDecodeError as exc:
-            raise ValidationError(f"Invalid JSON: {exc}") from exc
+            raise ValidationError(_("Invalid JSON: {}").format(exc)) from exc
 
 
 class YamlValidator(BaseValidator):
@@ -38,13 +39,13 @@ class YamlValidator(BaseValidator):
             import yaml
         except ImportError as exc:
             raise ValidationError(
-                "PyYAML is required for YAML validation. "
-                "Install it with: pip install pyyaml"
+                _("PyYAML is required for YAML validation. "
+                  "Install it with: pip install pyyaml")
             ) from exc
         try:
             yaml.safe_load(content)
         except yaml.YAMLError as exc:
-            raise ValidationError(f"Invalid YAML: {exc}") from exc
+            raise ValidationError(_("Invalid YAML: {}").format(exc)) from exc
 
 
 class XmlValidator(BaseValidator):
@@ -55,7 +56,7 @@ class XmlValidator(BaseValidator):
         try:
             ET.fromstring(content)
         except ET.ParseError as exc:
-            raise ValidationError(f"Invalid XML: {exc}") from exc
+            raise ValidationError(_("Invalid XML: {}").format(exc)) from exc
 
 
 class IniValidator(BaseValidator):
@@ -74,7 +75,7 @@ class IniValidator(BaseValidator):
         try:
             parser.read_file(io.StringIO(content))
         except configparser.Error as exc:
-            raise ValidationError(f"Invalid INI: {exc}") from exc
+            raise ValidationError(_("Invalid INI: {}").format(exc)) from exc
 
 
 class TomlValidator(BaseValidator):
@@ -93,13 +94,13 @@ class TomlValidator(BaseValidator):
                 import tomli as tomllib  # type: ignore[no-redef]
             except ImportError as exc:
                 raise ValidationError(
-                    "TOML validation requires Python 3.11+ or the tomli package. "
-                    "Install it with: pip install tomli"
+                    _("TOML validation requires Python 3.11+ or the tomli package. "
+                      "Install it with: pip install tomli")
                 ) from exc
         try:
             tomllib.loads(content)
         except tomllib.TOMLDecodeError as exc:
-            raise ValidationError(f"Invalid TOML: {exc}") from exc
+            raise ValidationError(_("Invalid TOML: {}").format(exc)) from exc
 
 
 class EnvValidator(BaseValidator):
@@ -126,15 +127,15 @@ class EnvValidator(BaseValidator):
                 stripped = stripped[7:].strip()
             # Must contain = with a non-empty key
             if "=" not in stripped:
-                errors.append(f"Line {lineno}: missing '=' in '{line.rstrip()}'")
+                errors.append(_("Line {}: missing '=' in '{}'").format(lineno, line.rstrip()))
                 continue
-            key, _, _ = stripped.partition("=")
+            key, _sep, _val = stripped.partition("=")
             if not key.strip():
-                errors.append(f"Line {lineno}: empty key in '{line.rstrip()}'")
+                errors.append(_("Line {}: empty key in '{}'").format(lineno, line.rstrip()))
 
         if errors:
             raise ValidationError(
-                "Invalid .env format:\n" + "\n".join(errors)
+                _("Invalid .env format:\n") + "\n".join(str(e) for e in errors)
             )
 
 

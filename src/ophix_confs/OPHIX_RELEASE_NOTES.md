@@ -1,5 +1,21 @@
 # Ophix Confs Release Notes
 
+## 2026.10.05.01
+
+- i18n regression sweep, ahead of this domain's own public-release pass:
+  - `models.py` — every field across `ConfigFormat`/`Configuration`/`ClientConfiguration` now has
+    a translated `verbose_name`, not just `help_text` on some of them; added missing
+    `Meta.verbose_name`/`verbose_name_plural` to `Configuration` and `ClientConfiguration`.
+  - `views.py` — wrapped the two fleet-API error strings in `ConfigurationDetailView`
+    ("Configuration already exists" / "Conflict" and "Configuration deletion is disabled on this
+    server."), matching the corrected convention from the taskserver wave's own i18n pass (every
+    known Tier 1 client branches purely on HTTP status code, never parses this text).
+  - `validators/formats.py` — wrapped every `ValidationError` message across all six format
+    validators (JSON/YAML/XML/INI/TOML/.env). Also fixed a real latent bug found while doing
+    this: `EnvValidator.validate()` used a bare `key, _, _ = stripped.partition("=")` throwaway
+    assignment that would have silently shadowed the newly-added `gettext_lazy as _` import for
+    the rest of the function — renamed to `_sep`/`_val`.
+
 ## 2026.08.30.01
 
 - Disabled-client/disabled-configuration styling in the "Authorised

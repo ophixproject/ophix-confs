@@ -52,28 +52,31 @@ class ConfigFormat(models.Model):
         Existing configurations are unaffected.
     """
 
-    name = models.CharField(max_length=50, unique=True)
-    mime_type = models.CharField(max_length=100, default="text/plain")
-    description = models.TextField(blank=True, null=True)
+    name = models.CharField(_("name"), max_length=50, unique=True)
+    mime_type = models.CharField(_("MIME type"), max_length=100, default="text/plain")
+    description = models.TextField(_("description"), blank=True, null=True)
     validator_class = models.CharField(
+        _("validator class"),
         max_length=200,
         blank=True,
         null=True,
         help_text=_("Dotted path to validator class. Leave blank for no validation."),
     )
     codemirror_mode = models.CharField(
+        _("CodeMirror mode"),
         max_length=50,
         blank=True,
         null=True,
         help_text=_("CodeMirror mode name (e.g. 'yaml', 'javascript', 'xml')."),
     )
     codemirror_mode_file = models.CharField(
+        _("CodeMirror mode file"),
         max_length=100,
         blank=True,
         null=True,
         help_text=_("Relative path to the CodeMirror mode JS file under ophix_confs/codemirror/."),
     )
-    enabled = models.BooleanField(default=True)
+    enabled = models.BooleanField(_("enabled"), default=True)
 
     class Meta:
         ordering = ("name",)
@@ -104,22 +107,26 @@ class Configuration(models.Model):
     header on retrieval.
     """
 
-    name = models.CharField(max_length=100, unique=True)
-    description = models.TextField(blank=True, null=True)
+    name = models.CharField(_("name"), max_length=100, unique=True)
+    description = models.TextField(_("description"), blank=True, null=True)
     format = models.ForeignKey(
         ConfigFormat,
+        verbose_name=_("format"),
         on_delete=models.PROTECT,
         related_name="configurations",
         help_text=_("Format of this configuration snippet."),
     )
     content = models.TextField(
+        _("content"),
         help_text=_("Configuration content stored verbatim."),
     )
-    enabled = models.BooleanField(default=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    enabled = models.BooleanField(_("enabled"), default=True)
+    updated_at = models.DateTimeField(_("updated at"), auto_now=True)
 
     class Meta:
         ordering = ("name",)
+        verbose_name = _("Configuration")
+        verbose_name_plural = _("Configurations")
 
     def __str__(self) -> str:
         return f"{self.name} ({self.format})"
@@ -136,12 +143,15 @@ class ClientConfiguration(ClientArtifactBase):
 
     configuration = models.ForeignKey(
         Configuration,
+        verbose_name=_("configuration"),
         on_delete=models.CASCADE,
         related_name="client_links",
     )
 
     class Meta:
         unique_together = ("client", "configuration")
+        verbose_name = _("Client Configuration")
+        verbose_name_plural = _("Client Configurations")
 
     def __str__(self) -> str:
         return f"{self.client} → {self.configuration}"
