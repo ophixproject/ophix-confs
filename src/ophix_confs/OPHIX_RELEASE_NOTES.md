@@ -1,5 +1,17 @@
 # Ophix Confs Release Notes
 
+## 2026.10.05.03
+
+- `TomlValidator` (`validators/formats.py`) falls back to the `tomli` package on Python
+  versions older than 3.11, where the `tomllib` standard-library module doesn't exist yet.
+  That fallback was never actually usable, though — this package's own floor is Python
+  3.10, but `tomli` was never declared as a dependency, so a real 3.10 install had nothing
+  to fall back to; TOML-format configurations would raise "TOML validation requires Python
+  3.11+ or the tomli package" with no way to resolve it short of a manual `pip install
+  tomli`. Added `tomli>=2.0; python_version < '3.11'` to `dependencies` so it's installed
+  automatically wherever it's actually needed, and skipped entirely on 3.11+ where the
+  standard-library module already covers it.
+
 ## 2026.10.05.02
 
 - Added the `Programming Language :: Python :: 3.14` classifier, after real verification
