@@ -1,5 +1,20 @@
 # Ophix Confs Release Notes
 
+## 2026.10.05.02
+
+- Added the `Programming Language :: Python :: 3.14` classifier, after real verification
+  (not a rubber-stamp add): a fresh Python 3.14 venv, a live `migrate` through this
+  package's full migration history, real HTTP requests against every registered admin
+  page (changelist with disabled-row styling, add-form, change-form), a real
+  `export_confs`/`import_confs` round trip (both with and without `--stable`), and all six
+  format validators (JSON/YAML/XML/INI/TOML/.env) exercised directly, including their
+  error-message paths. All passed.
+- Found and fixed a real (non-3.14-specific) portability bug along the way: `_build_meta()`
+  in `export_confs.py` had the identical `import pwd` issue as `ophix-creds`'s
+  `export_creds.py` (see that package's release notes) — an unconditional top-level import
+  inside a function whose own surrounding `try/except` was meant to tolerate exactly this
+  failure mode. Moved the import inside the `try`.
+
 ## 2026.10.05.01
 
 - i18n regression sweep, ahead of this domain's own public-release pass:
