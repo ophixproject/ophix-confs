@@ -147,7 +147,7 @@ When you link a client to a configuration, the `enabled` checkbox on the link co
 Tier 2 clients (scripts and services that consume configurations) import directly from the client library. They do not communicate with the server directly.
 
 ```python
-from ophix_conf_client import get_config
+from conf_client import get_config
 
 # Fetch the configuration whose name is stored in the NGINX_CONFIG_NAME env var
 nginx_conf = get_config("NGINX_CONFIG_NAME")

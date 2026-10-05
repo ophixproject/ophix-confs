@@ -1,5 +1,13 @@
 # Ophix Confs Release Notes
 
+## 2026.10.05.04
+
+- Fixed the `Tier 2 usage` example in the `configurations` inline doc: `from ophix_conf_client
+  import get_config` was never a valid import — the pip package `ophix-conf-client` strips its
+  `ophix-` prefix for the actual Python module name (`conf_client`). Found while sweeping git
+  history for a public-release pass. `conf_client`'s own `__init__.py` docstring documents the
+  correct top-level form; now reads `from conf_client import get_config`.
+
 ## 2026.10.05.03
 
 - `TomlValidator` (`validators/formats.py`) falls back to the `tomli` package on Python
