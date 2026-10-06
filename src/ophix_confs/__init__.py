@@ -8,6 +8,17 @@ def install_configure(conf, command):
     conf.set("backup", "targets_extra", ",".join(filter(None, [existing, "confs"])))
 
 
+def get_doc_tokens():
+    """
+    Optional hook discovered by ophix-docs (if installed), for {{ token }}
+    substitution in shared markdown like the Client Quickstart doc.
+    """
+    return {
+        "client_package": "ophix-conf-client",
+        "client_command": "conf-client",
+    }
+
+
 def get_revisions_targets():
     """
     Optional hook discovered by ophix-revisions (if installed). `encrypted` is the default
