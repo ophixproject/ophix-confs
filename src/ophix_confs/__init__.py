@@ -16,6 +16,7 @@ def get_doc_tokens():
     return {
         "client_package": "ophix-conf-client",
         "client_command": "conf-client",
+        "client_venv": ".conf-env",
     }
 
 
