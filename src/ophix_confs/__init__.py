@@ -19,6 +19,8 @@ def get_doc_tokens():
         "client_venv": ".conf-env",
         "client_env": ".conf.env",
         "client_env_prefix": "CONFSERVER",
+        "artifact_name": "Configuration",
+        "artifact_name_lower": "configuration",
     }
 
 
