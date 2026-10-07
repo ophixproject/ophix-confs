@@ -18,6 +18,7 @@ def get_doc_tokens():
         "client_command": "conf-client",
         "client_venv": ".conf-env",
         "client_env": ".conf.env",
+        "client_env_prefix": "CONFSERVER",
     }
 
 

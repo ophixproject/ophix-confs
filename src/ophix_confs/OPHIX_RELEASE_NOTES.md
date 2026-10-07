@@ -9,6 +9,10 @@
 - `get_doc_tokens()` now also contributes `client_env` (`.conf.env`) — the
   actual env file this client writes, confirmed against `conf_client.core`'s
   own `ENV_FILE_NAME` constant rather than assumed.
+- `get_doc_tokens()` now also contributes `client_env_prefix` (`CONFSERVER`) —
+  the env var name prefix used inside `client_env` (e.g. `CONFSERVER_URL`),
+  confirmed against `conf_client`'s own `server_url_key` config value rather
+  than assumed.
 
 ## 2026.10.07.01
 
