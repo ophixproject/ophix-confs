@@ -1,6 +1,6 @@
 # Ophix Confs Release Notes
 
-## 2026.10.09.01
+## 2026.10.08.02
 
 - Added migration `0003_i18n_verbose_names` — state-only `AlterField`/`AlterModelOptions`
   operations recording the `verbose_name`/`help_text`/`Meta` changes made by the 2026.10.05.04
