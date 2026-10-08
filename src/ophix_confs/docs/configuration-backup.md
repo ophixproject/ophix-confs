@@ -19,7 +19,7 @@ Configuration imports reference clients by name. The full restore sequence for a
 import_hosts  →  import_clients  →  import_confs
 ```
 
-Run `import_hosts` and `import_clients` (from `ophix-server-base`) before importing configurations with client links. See [Server Backup and Migration](server-backup) for the base-layer commands.
+Run `import_hosts` and `import_clients` (from `ophix-server-base`) before importing configurations with client links. See [Server Backup and Migration](/admin/ophix_docs/docpage/crosslink/ophix.core/server-backup/) for the base-layer commands.
 
 If you are only restoring configuration content (no client links), `import_confs` can run independently.
 
