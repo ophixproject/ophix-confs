@@ -224,5 +224,6 @@ That's it - you're done. The admin UI should now be live at `https://<your-hostn
   installed) for how to bootstrap a client against this server.
 - For `ophix-confs` specific instructions go to **Documentation → Search** and search for
   `conf-client`. You will need to install
-  [ophix-conf-client](https://github.com/ophixproject/ophix-conf-client) on each machine that
-  needs to fetch configuration snippets.
+  [ophix-conf-client](https://github.com/ophixproject/ophix-conf-client) in each virtual environment that
+  needs to fetch configuration snippets. A single user account can have multiple clients, as long
+  as each one has its own venv.
