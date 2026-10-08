@@ -1,5 +1,14 @@
 # Ophix Confs Release Notes
 
+## 2026.10.09.01
+
+- Added migration `0003_i18n_verbose_names` — state-only `AlterField`/`AlterModelOptions`
+  operations recording the `verbose_name`/`help_text`/`Meta` changes made by the 2026.10.05.04
+  i18n sweep, which wrapped model field labels in `gettext_lazy` but never shipped a matching
+  migration. No database column, type, or default changes; fixes the `migrate` warning
+  ("Your models in app(s): 'ophix_confs' have changes that are not yet reflected in a
+  migration") surfaced during a real server upgrade.
+
 ## 2026.10.08.01
 
 - `configuration-backup.md`'s link to `ophix-server-base`'s "Server Backup and Migration" doc
