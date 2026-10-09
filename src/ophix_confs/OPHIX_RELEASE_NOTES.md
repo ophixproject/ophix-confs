@@ -1,5 +1,14 @@
 # Ophix Confs Release Notes
 
+## Unreleased
+
+- `get_revisions_targets()`'s `confs` entry now declares a precise `"models"` list
+  (`["ophix_confs.configuration"]`), matching exactly what `export_confs` queries —
+  `ConfigFormat` (a lookup table) and `ClientConfiguration` join records never
+  triggered a meaningful re-export either way, but the target previously relied
+  on the coarser `app_label`-only fallback rather than declaring this explicitly.
+  Requires `ophix-revisions>=2026.10.09.03`.
+
 ## 2026.10.08.02
 
 - Added migration `0003_i18n_verbose_names` — state-only `AlterField`/`AlterModelOptions`
