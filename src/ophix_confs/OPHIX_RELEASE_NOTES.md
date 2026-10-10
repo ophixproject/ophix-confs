@@ -1,6 +1,6 @@
 # Ophix Confs Release Notes
 
-## Unreleased
+## 2026.10.09.01
 
 - `get_revisions_targets()`'s `confs` entry now declares a precise `"models"` list
   (`["ophix_confs.configuration"]`), matching exactly what `export_confs` queries —
