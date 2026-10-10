@@ -38,9 +38,12 @@ def get_revisions_targets():
             "app_label": "ophix_confs",
             # Precise model match — export_confs only exports Configuration
             # rows. ConfigFormat is a lookup table referenced by FK, not
-            # itself exported; ClientConfiguration join records need
-            # --include-client-links, which the revisions worker never passes.
+            # itself exported; ClientConfiguration join records are nested
+            # inside each configuration's own record via include_links_kwarg
+            # below, not a separate model save of their own.
             "models": ["ophix_confs.configuration"],
+            "records_key": "configurations",
+            "include_links_kwarg": "include_client_links",
             "export_command": "export_confs",
             "encrypted": False,
             "stable": True,
